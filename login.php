@@ -16,17 +16,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     ]);
 
     $user_db = $stmt->fetch();
-// print_r($_POST);
 
     if ($user_db) {
-        // print_r($user_db); exit;
-        // echo ('Ciao ' . $user_db["user"]); die;
+       
     
         if (password_verify($_POST['password'], $user_db["password"])) {
             $_SESSION['user_id'] = $user_db['id'];
             
-            echo ('Ciao ' . $user_db["user"]); die;
-            // header('Location: /S2-L1-Login/index.php'); exit;
+            // echo ('Ciao ' . $user_db["user"]); die;
+            header('Location: /S2-L1-Login/index.php'); exit;
         };
     }
 
