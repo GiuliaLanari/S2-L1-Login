@@ -20,7 +20,11 @@
                     </li><?php
                 } ?>
             </ul>
-         <a class="nav-link me-3" href="logout.php">Logout</a> 
+            <?php if ($user_db) { ?>
+                <a class="nav-link me-3" href="logout.php">Logout</a>   
+            <?php
+            } ?> 
+         
           
         </div>
     </div>
