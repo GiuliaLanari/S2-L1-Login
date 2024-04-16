@@ -2,14 +2,32 @@
 
 include_once __DIR__ . '/includes/init.php';
 
-$users = [];
-$users['user'] = $_POST['user'] ?? '';
-$users['email'] = $_POST['email'] ?? '';
-$users['password'] = $_POST['password'] ?? '';
+if ($user_db) header('Location: login.php');
 
+$users = [];
+$user = $_POST['user'] ?? '';
+$email= $_POST['email'] ?? '';
+$password = $_POST['password'] ?? '';
+
+$errors =[];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
+
+    if(strlen($user)=== 0){
+        $errors["user"]= "UserName non inserito";
+    }
+  
+    if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
+        $errors["email"] = "Email non valida";
+    }
+  
+    if(strlen($password)=== 0 ){
+        $errors["password"]= "Passeword non inserito";
+    }
+
+
+    if($errors===[]){
     $stmt = $pdo->prepare("
         INSERT INTO users
         (user, email, password)
@@ -17,15 +35,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     ");
     
     $stmt->execute([
-        'user' => $users['user'],
-        'email'    => $users['email'],
-        'password' => password_hash($users['password'],PASSWORD_DEFAULT),
+        'user' => $user,
+        'email'    => $email,
+        'password' => password_hash($password,PASSWORD_DEFAULT),
     ]);
 
-   
 
     header('Location:/S2-L1-Login/login.php');
     exit;
+
+    };
+   
+
 }
 
 include_once __DIR__ . '/includes/start.php';
@@ -36,15 +57,18 @@ include_once __DIR__ . '/includes/start.php';
     <form action="" method="POST" novalidate>
         <div class="mb-3">
             <label for="user" class="form-label">Username</label>
-            <input type="text" class="form-control" id="user" name="user" value="<?= $users['user'] ?>">
+            <input type="text" class="form-control" id="user" name="user" value="<?= $user ?>">
+            <div class="error text-danger "><?= $errors["user"]?? "" ?></div>
         </div>
         <div class="mb-3">
             <label for="email" class="form-label">Email</label>
-            <input type="email" class="form-control" id="email" name="email" value="<?= $users['email'] ?>">
+            <input type="email" class="form-control" id="email" name="email" value="<?= $email ?>">
+            <div class="error text-danger "><?= $errors["email"]?? "" ?></div>
         </div>
         <div class="mb-3">
             <label for="password" class="form-label">Password</label>
             <input type="password" class="form-control" id="password" name="password" value="">
+            <div class="error text-danger "><?= $errors["password"]?? "" ?></div>
         </div>
         <button type="submit" class="btn btn-primary">Registrazione</button>
     </form>

@@ -1,5 +1,9 @@
 <?php
 include_once __DIR__ . '/includes/init.php';
+include_once __DIR__ . '/includes/start.php';
+
+// if ($user_db) {header('Location:/S2-L1-Login/login.php');}
+
 
 $user = [];
 $user['user'] = $_POST['user'] ?? '';
@@ -19,16 +23,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($user_db) {
        
-    
         if (password_verify($_POST['password'], $user_db["password"])) {
             $_SESSION['user_id'] = $user_db['id'];
             
-            // echo ('Ciao ' . $user_db["user"]); die;
             header('Location: /S2-L1-Login/index.php'); exit;
-        };
+        }; 
+        
     }
 
     $errors['credentials'] = 'Credenziali non valide';
+   
 }
 
 include_once __DIR__ . '/includes/start.php'; ?>

@@ -12,5 +12,5 @@ if (isset($_SESSION['user_id'])) {
         'user_id' => $_SESSION['user_id'],
     ]);
 
-    $user_from_db = $stmt->fetch();
+    $user_db = $stmt->fetch();
 }
