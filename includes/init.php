@@ -2,6 +2,8 @@
 session_start();
 include  __DIR__ . '/database.php';
 
+$user_db =false;
+
 if (isset($_SESSION['user_id'])) {
     $stmt = $pdo->prepare("
         SELECT * FROM users
